@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	
+	<entry key="select.customer.invoice">
+		select vcustn as customerno, vinvdat1 as invdate1, count(*) as invcount from WAVEDLIB.vda36c where vpdfgen = '1' and (vinvnb like 'ID%' or vinvnb like 'IC%') and date(vpdfdat) = (SELECT current date FROM sysibm.sysdummy1) GROUP BY vcustn, vinvdat1 HAVING count(*) > 1  order by vcustn, vinvdat1
+	</entry>
+	
+	<entry key="select.invoicenumner.by.customer">
+		select vinvnb from WAVEDLIB.vda36c where vpdfgen = '1' and vcustn = :vcustn and vinvdat1 = :vinvdat1 and (vinvnb like 'ID%' or vinvnb like 'IC%')  and date(vpdfdat) = (SELECT current date FROM sysibm.sysdummy1)  order by vinvnb
+	</entry>
+	
+	<entry key="insert.invoice.by.customer">
+		insert into WAVEDLIB.vda36c (vinvnb,vcustn,vinvdat,vinvdat1,vcrtdtc) values(:vinvnb,:vcustn,:vinvdat,:vinvdat1,:vcrtdtc)
+	</entry>
+	
+	<entry key="update.invoice.bundle">
+		update WAVEDLIB.vda36c set vbndlinv = :vbndlinv where vinvnb = :vinvnb
+	</entry>
+	
+	<entry key="update.invoice.pdf.bundle">
+		update WAVEDLIB.vda36c set vpdfgen = '1', vpdfdat = :vpdfdat where vinvnb = :vinvnb
+	</entry>
+	
+</properties>
